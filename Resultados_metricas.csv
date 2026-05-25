@@ -1,0 +1,51 @@
+Paquete,Clase (Element),CBO,WMC,LOC,NOM
+<Package>,,,1,6,
+,Main,2,1,6,0
+<Package>Controlador,Controlador,,59,202,
+,HistorialController,2,17,46,7
+,PacienteListController,4,13,47,8
+,ConsultaController,5,14,50,5
+,LoginController,5,15,59,2
+<Package>Modelo.Core,,,52,214,
+,Observer,0,1,2,1
+,ViewLayout,0,10,106,8
+,View,3,11,27,11
+,Controller,5,18,30,17
+,MainViewLayout,6,7,49,5
+<Package>Modelo.DAO,,,37,357,
+,DatabaseManager,0,4,7,4
+,NutriologoDAO,3,8,78,5
+,PacienteDAO,3,10,90,6
+,ConsultaDAO,4,15,182,9
+<Package>Modelo.POJOs,,,110,308,
+,AnamnesisData,0,24,71,24
+,CaloriasCalculo,0,10,27,10
+,Macronutrientes,0,8,21,8
+,MetaNutricional,0,8,21,8
+,Nutriologo,0,7,18,7
+,Paciente,0,14,45,14
+,Persona,0,7,17,7
+,MetaFactory,1,5,13,0
+,Expediente,2,7,17,7
+,Consulta,3,20,58,20
+<Package>Modelo.Servicios,,,113,327,
+,HashingServicio,0,4,29,3
+,NutricionServicio,1,13,42,4
+,MacronutrientesServicio,2,1,13,1
+,Validaciones,4,18,20,3
+,NutriNubeModelo,15,77,223,46
+<Package>Vista,,,252,1485,
+,ConsultaFormularioViewLayout,0,93,597,55
+,HistorialConsultasViewLayout,0,16,134,15
+,LoginViewLayout,0,15,103,11
+,PacienteListViewLayout,0,13,89,13
+,LoginView,3,5,21,5
+,PacienteListView,8,16,95,6
+,HistorialConsultasView,9,25,145,7
+,ConsultaFormularioView,12,62,301,17
+,,,,,
+,,,,,
+,,,,,
+Max (clase),,15,93,597,55
+Min (clase),,0,1,2,0
+Prom (clase),,2.76,16.54,78.35,10.24
