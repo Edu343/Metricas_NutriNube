@@ -236,133 +236,106 @@ function EQ_GET_DATA(){
 // --- INICIO DE RECLASIFICACIÓN FORZADA ---
 function reclasificar(nodo) {
 
+    // 1. COMPORTAMIENTO PARA CLASES (Tienen 'metrics')
     if (nodo.metrics && nodo.metricvalues) {
 
         // =====================================================
         // WMC + COMPLEXITY
-        // metrics["16"] = Weighted Method Count
-        // metrics["1"]  = Complexity
-        // Ambos usan metricvalues["16"]
         // =====================================================
-
         if (nodo.metricvalues["16"] !== undefined) {
-
             var val = nodo.metricvalues["16"];
             var nivel = 1;
+            if (val <= 10)       nivel = 1;
+            else if (val <= 20)  nivel = 2;
+            else if (val <= 40)  nivel = 3;
+            else                 nivel = 4;
 
-            if (val <= 10)
-                nivel = 1; // Muy bajo
-
-            else if (val <= 20)
-                nivel = 2; // Bajo
-
-            else if (val <= 40)
-                nivel = 3; // Medio
-
-            else
-                nivel = 4; // Alto
-
-            nodo.metrics["16"] = nivel; // WMC
-            nodo.metrics["1"]  = nivel; // Complexity
+            nodo.metrics["16"] = nivel;
+            nodo.metrics["1"]  = nivel;
         }
-
 
         // =====================================================
         // CBO + COUPLING
-        // metrics["20"] = Coupling Between Object Classes
-        // metrics["2"]  = Coupling
-        // Ambos usan metricvalues["20"]
         // =====================================================
-
         if (nodo.metricvalues["20"] !== undefined) {
-
             var val = nodo.metricvalues["20"];
             var nivel = 1;
+            if (val <= 6)       nivel = 1;
+            else if (val <= 12) nivel = 2;
+            else if (val <= 19) nivel = 3;
+            else                nivel = 4;
 
-            if (val <= 6)
-                nivel = 1; // Muy bajo
-
-            else if (val <= 12)
-                nivel = 2; // Bajo
-
-            else if (val <= 19)
-                nivel = 3; // Medio
-
-            else
-                nivel = 4; // Alto
-
-            nodo.metrics["20"] = nivel; // CBO
-            nodo.metrics["2"]  = nivel; // Coupling
+            nodo.metrics["20"] = nivel;
+            nodo.metrics["2"]  = nivel;
         }
-
 
         // =====================================================
         // NOM + LACK OF COHESION
-        // metrics["27"] = Number of Methods
-        // metrics["3"]  = Lack of Cohesion
-        // Ambos usan metricvalues["27"]
         // =====================================================
-
         if (nodo.metricvalues["27"] !== undefined) {
-
             var val = nodo.metricvalues["27"];
             var nivel = 1;
+            if (val <= 10)      nivel = 1;
+            else if (val <= 20) nivel = 2;
+            else if (val <= 30) nivel = 3;
+            else                nivel = 4;
 
-            if (val <= 10)
-                nivel = 1; // Muy bajo
-
-            else if (val <= 20)
-                nivel = 2; // Bajo
-
-            else if (val <= 30)
-                nivel = 3; // Medio
-
-            else
-                nivel = 4; // Alto
-
-            nodo.metrics["27"] = nivel; // NOM
-            nodo.metrics["3"]  = nivel; // Lack of Cohesion
+            nodo.metrics["27"] = nivel;
+            nodo.metrics["3"]  = nivel;
         }
 
-
         // =====================================================
-        // LOC + SIZE
-        // metrics["8"] = Class Lines of Code
-        // metrics["4"] = Size
-        // Ambos usan metricvalues["8"]
+        // LOC + SIZE (CLASES) -> Ajustado a tus 3 colores reales
         // =====================================================
-
         if (nodo.metricvalues["8"] !== undefined) {
-
             var val = nodo.metricvalues["8"];
             var nivel = 1;
 
             if (val <= 200)
-                nivel = 1; // Bajo
-
+                nivel = 1; // Bajo -> Amarillo/Verde Oscuro (#007F24)
             else if (val <= 500)
-                nivel = 3; // Medio
-
+                nivel = 3; // Medio -> Pintará Amarillo (#FFC800)
             else
-                nivel = 4; // Alto
+                nivel = 4; // Alto -> Pintará Naranja (#FF5B13)
 
-            nodo.metrics["8"] = nivel; // LOC
-            nodo.metrics["4"] = nivel; // Size
+            nodo.metrics["8"]  = nivel; // Class Lines of Code
+            nodo.metrics["24"] = nivel; // Class-Methods Lines of Code
+            nodo.metrics["4"]  = nivel; // Size
+            nodo.metrics["0"]  = nivel; // C3 (Fuerza el color en el Sunburst)
+        }
+    }
+
+    // 2. COMPORTAMIENTO PARA PAQUETES (Tienen 'pmetrics')
+    if (nodo.pmetrics && nodo.pmetricvalues) {
+        
+        var valPaquete = nodo.pmetricvalues["6"] !== undefined ? nodo.pmetricvalues["6"] : nodo.pmetricvalues["8"];
+
+        if (valPaquete !== undefined) {
+            var nivelPaquete = 1;
+
+            if (valPaquete <= 200)
+                nivelPaquete = 1; // Bajo -> Verde Oscuro
+            else if (valPaquete <= 500)
+                nivelPaquete = 3; // Medio -> Amarillo
+            else
+                nivelPaquete = 4; // Alto -> Naranja
+
+            nodo.pmetrics["6"] = nivelPaquete; // Class Lines of Code (Paquete)
+            nodo.pmetrics["8"] = nivelPaquete; 
+            nodo.pmetrics["4"] = nivelPaquete; // Size (Paquete)
+            nodo.pmetrics["0"] = nivelPaquete; // C3 (Paquete)
         }
     }
 
     // Recorrer hijos recursivamente
     if (nodo.children) {
-
         for (var i = 0; i < nodo.children.length; i++) {
             reclasificar(nodo.children[i]);
         }
     }
 }
-
 // Ejecutar reclasificación
 reclasificar(ret);
-
 // --- FIN DE RECLASIFICACIÓN FORZADA ---
 
 return ret;
